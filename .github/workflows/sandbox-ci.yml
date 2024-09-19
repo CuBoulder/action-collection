@@ -1,0 +1,41 @@
+name: "Sandbox Site CI"
+
+on:
+  workflow_call:
+    inputs:
+      terminus_token:
+        required: true
+        type: string
+      sandbox_site_name:
+        required: true
+        type: string
+
+jobs:
+  composer_update:
+    name: "run composer update"
+    runs-on: ubuntu-latest
+    steps:
+      - name: wait until all prs accross all dev repos are merged
+        run: sleep 60
+      - name: checkout-repo
+        uses: actions/checkout/@v2
+      - name: include php and composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: composer update
+        run: |
+          php --version
+          composer --version
+      - name: Install Terminus
+        uses: pantheon-systems/terminus-github-actions@v1
+        with:
+          pantheon-machine-token: ${{ inputs.terminus_token }}
+      - name: check terminus
+        run: |
+          echo terminus --version
+          echo terminus auth:whoami
+      - name: run bash update script
+        run: ./update-sctipt.bash
+        env:
+          SANDBOX_SITE_NAME: inputs.sandbox_site_name
