@@ -27,7 +27,7 @@ jobs:
           composer --version
       - name: Install Terminus
         run: |
-          composer require pantheon-systems/terminus:3.3.5 --with-all-dependencies
+          composer require pantheon-systems/terminus:3.3.5
           ./vendor/bin/terminus auth:login --machine-token=${{ secrets.terminus_token }}
       - name: check terminus
         run: |
