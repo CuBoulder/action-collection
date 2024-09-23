@@ -31,12 +31,13 @@ jobs:
           curl -L https://github.com/pantheon-systems/terminus/releases/download/3.6.0/terminus.phar --output terminus
           chmod +x terminus
           ./terminus self:update
+          sudo ln -s ~/terminus/terminus /usr/local/bin/terminus
       - name: login to terminus
-        run: ./terminus auth:login --machine-token=${{ secrets.terminus_token }}
+        run: terminus auth:login --machine-token=${{ secrets.terminus_token }}
       - name: check terminus
         run: |
-          echo ./vendor/bin/terminus --version
-          echo ./vendor/bin/terminus auth:whoami
+          echo terminus --version
+          echo terminus auth:whoami
       - name: run bash update script
         run: ./update-sctipt.bash
         env:
