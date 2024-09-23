@@ -2,13 +2,11 @@ name: "Sandbox Site CI"
 
 on:
   workflow_call:
-    inputs:
+    secrets:
       terminus_token:
         required: true
-        type: string
       sandbox_site_name:
         required: true
-        type: string
 
 jobs:
   composer_update:
@@ -30,7 +28,7 @@ jobs:
       - name: Install Terminus
         run: |
           composer require pantheon-systems/terminus
-          ./vendor/bin/terminus auth:login --machine-token=${{ inputs.terminus_token }}
+          ./vendor/bin/terminus auth:login --machine-token=${{ secrets.terminus_token }}
       - name: check terminus
         run: |
           echo ./vendor/bin/terminus --version
@@ -38,4 +36,4 @@ jobs:
       - name: run bash update script
         run: ./update-sctipt.bash
         env:
-          SANDBOX_SITE_NAME: ${{ inputs.sandbox_site_name }}
+          SANDBOX_SITE_NAME: ${{ secrets.sandbox_site_name }}
