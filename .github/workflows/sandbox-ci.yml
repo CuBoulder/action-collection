@@ -28,13 +28,13 @@ jobs:
           php --version
           composer --version
       - name: Install Terminus
-        uses: pantheon-systems/terminus-github-actions@v1
-        with:
-          pantheon-machine-token: ${{ inputs.terminus_token }}
+        run: |
+          composer require pantheon-systems/terminus
+          ./vendor/bin/terminus auth:login --machine-token=${{ inputs.terminus_token }}
       - name: check terminus
         run: |
-          echo terminus --version
-          echo terminus auth:whoami
+          echo ./vendor/bin/terminus --version
+          echo ./vendor/bin/terminus auth:whoami
       - name: run bash update script
         run: ./update-sctipt.bash
         env:
