@@ -39,4 +39,6 @@ jobs:
           terminus --version
           terminus auth:whoami
       - name: run bash update script
-        run: terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- config:get pantheon_domain_masking.settings
+        run: |
+          terminus auth:whoami
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- config:get pantheon_domain_masking.settings
