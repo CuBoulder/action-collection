@@ -36,9 +36,7 @@ jobs:
         run: terminus auth:login --machine-token=${{ secrets.terminus_token }}
       - name: check terminus
         run: |
-          echo terminus --version
-          echo terminus auth:whoami
+          terminus --version
+          terminus auth:whoami
       - name: run bash update script
-        run: ./update-sctipt.bash
-        env:
-          SANDBOX_SITE_NAME: ${{ secrets.sandbox_site_name }}
+        run: terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- config:get pantheon_domain_masking.settings
