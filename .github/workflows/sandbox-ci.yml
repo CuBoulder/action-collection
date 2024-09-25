@@ -12,14 +12,15 @@ on:
 
 jobs:
   composer_update:
-    name: "run composer update"
+    name: Update and Deploy Developer Sandbox
     runs-on: ubuntu-latest
     steps:
       - name: wait until all prs accross all dev repos are merged
         run: sleep 5
       - name: checkout-repo
         uses: actions/checkout/@v2
-      - uses: webfactory/ssh-agent@v0.9.0
+      - name: setup ssh
+        uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.ssh_key }}
       - name: include php and composer
@@ -28,8 +29,12 @@ jobs:
           php-version: '8.3'
       - name: composer update
         run: |
-          php --version
-          composer --version
+          composer update-upstream-dependencies
+          composer update
+      - name: push changes back to repos
+        run: |
+          git add .
+          git commit -m --verbose date +"%d-%m-%Y-%T"
       - name: Install Terminus
         run: |
           mkdir -p ~/terminus && cd ~/terminus
@@ -39,11 +44,15 @@ jobs:
           sudo ln -s ~/terminus/terminus /usr/local/bin/terminus
       - name: login to terminus
         run: terminus auth:login --machine-token=${{ secrets.terminus_token }}
-      - name: check terminus
-        run: |
-          terminus --version
-          terminus auth:whoami
       - name: run bash update script
         run: |
-          terminus auth:whoami
-          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- config:get pantheon_domain_masking.settings
+          terminus site:upstream:clear-cache ${{ secrets.sandbox_site_name }}
+          terminus upstream:updates:apply ${{ secrets.sandbox_site_name }}.dev --accept-upstream
+          terminus env:deploy ${{ secrets.sandbox_site_name }}.test --yes
+          terminus env:deploy ${{ secrets.sandbox_site_name }}.live --yes --updatedb --cc
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- cr
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- en media_alias_display media_entity_file_replace media_file_delete menu_block ckeditor5_paste_filter scheduler layout_builder_iframe_modal linkit administerusersbyrole google_tag menu_firstchild responsive_preview anchor_link smtp recaptcha_v3 rebuild_cache_access ckeditor5_bootstrap_accordion ucb_drush_commands menu_item_extras ucb_styled_block ucb_linkmod --yes
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- features:import cu_boulder_content_types --yes
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- config:import --partial --source=/code/web/profiles/custom/boulder_profile/config/install --yes
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- updb --yes;
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- cr;
