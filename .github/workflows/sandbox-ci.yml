@@ -34,10 +34,10 @@ jobs:
           composer update
       - name: push changes back to repos
         env:
-          DATE: echo "$(date +"%d-%m-%Y-%T")"
+          DATE: echo $(date +"%d-%m-%Y-%T")
         run: |
           git add .
-          git commit -m $DATE --verbose
+          git commit -m "$DATE"
       - name: Install Terminus
         run: |
           mkdir -p ~/terminus && cd ~/terminus
