@@ -29,9 +29,9 @@ jobs:
           php-version: '8.3'
       - name: composer update
         run: |
-          composer update -v -n
-          composer update-upstream-dependencies -v -n
-          composer update -v -n
+          composer install
+          composer update-upstream-dependencies
+          composer update
       - name: push changes back to repos
         run: |
           git add .
