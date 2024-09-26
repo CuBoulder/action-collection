@@ -36,8 +36,8 @@ jobs:
         env:
           DATE: date +"%d-%m-%Y-%T"
         run: |
-          git add . "$DATE"
-          git commit -m --verbose
+          git add .
+          git commit -m --verbose "($DATE)"
       - name: Install Terminus
         run: |
           mkdir -p ~/terminus && cd ~/terminus
