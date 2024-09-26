@@ -36,6 +36,8 @@ jobs:
         env:
           DATE: echo $(date +"%d-%m-%Y-%T")
         run: |
+          git config --global user.email "noreply@github.com"
+          git config --global user.name "Sandbox Update"
           git add .
           git commit -m "$DATE"
       - name: Install Terminus
