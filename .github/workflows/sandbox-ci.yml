@@ -33,9 +33,11 @@ jobs:
           composer update-upstream-dependencies
           composer update
       - name: push changes back to repos
+        env:
+          DATE: date +"%d-%m-%Y-%T"
         run: |
-          git add .
-          git commit -m --verbose date +"%d-%m-%Y-%T"
+          git add . "$DATE"
+          git commit -m --verbose
       - name: Install Terminus
         run: |
           mkdir -p ~/terminus && cd ~/terminus
