@@ -10,6 +10,12 @@ name: Lint Code Base
 # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
 #
 
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
 ###############
 # Set the Job #
 ###############
