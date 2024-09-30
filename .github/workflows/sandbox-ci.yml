@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: wait until all prs accross all dev repos are merged
-        run: sleep 5
+        run: sleep 600
       - name: checkout-repo
         uses: actions/checkout/@v2
       - name: setup ssh
