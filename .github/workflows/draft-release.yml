@@ -11,15 +11,15 @@ jobs:
     name: "Draft a release"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Create release branch
         run: git checkout -b release/${{ github.event.inputs.version }}
 
       - name: Update changelog
-        uses: thomaseizinger/keep-a-changelog-new-release@1.1.0
+        uses: thomaseizinger/keep-a-changelog-new-release@3
         with:
-          version: ${{ github.event.inputs.version }}
+          tag: ${{ github.event.inputs.version }}
 
       - name: Initialize mandatory git config
         run: |
@@ -40,14 +40,13 @@ jobs:
         run: git push origin release/${{ github.event.inputs.version }}
 
       - name: Create pull request
-        uses: thomaseizinger/create-pull-request@1.0.0
+        uses: thomaseizinger/create-pull-request@1
         env:
           GITHUB_TOKEN: ${{ secrets.envPAT }}
         with:
           head: release/${{ github.event.inputs.version }}
           base: main
           title: Release version ${{ github.event.inputs.version }}
-
           body: |
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
 
