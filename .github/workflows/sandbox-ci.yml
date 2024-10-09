@@ -32,16 +32,16 @@ jobs:
           composer install
           composer update-upstream-dependencies
           composer update
-      - name: get date and terminus_token
+      - name: get date and time
         run: |
-          COMMIT_DATE=$(date +"%d-%m-%Y-%T")
-          echo "DATE=$COMMIT_DATE" >> $env:GITHUB_ENV
+          NOW=$(date +"%d-%m-%Y-%T")
+          echo "DATE=$NOW" >> $GITHUB_ENV
       - name: push changes back to repo
         run: |
           git config --global user.email "noreply@github.com"
           git config --global user.name "Sandbox Update"
           git add .
-          git commit -m "{{ $env.COMMIT_DATE }}"
+          git commit -m "$DATE"
           git push origin master
       - name: Install Terminus
         run: |
