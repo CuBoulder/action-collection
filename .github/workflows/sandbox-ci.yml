@@ -32,7 +32,7 @@ jobs:
           composer install
           composer update-upstream-dependencies
           composer update
-      - name: push changes back to repos
+      - name: push changes back to repo
         env:
           DATE: echo $(date +"%d-%m-%Y-%T")
         run: |
@@ -40,6 +40,7 @@ jobs:
           git config --global user.name "Sandbox Update"
           git add .
           git commit -m "$DATE"
+          git push origin master
       - name: Install Terminus
         run: |
           mkdir -p ~/terminus && cd ~/terminus
