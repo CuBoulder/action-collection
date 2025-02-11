@@ -59,7 +59,7 @@ jobs:
           terminus env:deploy ${{ secrets.sandbox_site_name }}.test --yes
           terminus env:deploy ${{ secrets.sandbox_site_name }}.live --yes --updatedb --cc
           terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- cr
-          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- en media_alias_display media_entity_file_replace media_file_delete menu_block ckeditor5_paste_filter scheduler layout_builder_iframe_modal linkit administerusersbyrole google_tag menu_firstchild responsive_preview anchor_link smtp recaptcha_v3 rebuild_cache_access ckeditor5_bootstrap_accordion ucb_drush_commands menu_item_extras ucb_styled_block ucb_linkmod trash --yes
+          terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- en media_alias_display media_entity_file_replace media_file_delete menu_block ckeditor5_paste_filter scheduler layout_builder_iframe_modal linkit administerusersbyrole google_tag menu_firstchild responsive_preview anchor_link smtp recaptcha_v3 rebuild_cache_access ckeditor5_bootstrap_accordion ucb_drush_commands menu_item_extras ucb_styled_block ucb_linkmod trash entity_usage --yes
           terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- features:import cu_boulder_content_types --yes
           terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- config:import --partial --source=/code/web/profiles/custom/boulder_profile/config/install --yes
           terminus remote:drush ${{ secrets.sandbox_site_name }}.live -- updb --yes;
