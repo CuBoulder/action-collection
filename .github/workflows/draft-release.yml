@@ -11,13 +11,13 @@ jobs:
     name: "Draft a release"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Create release branch
         run: git checkout -b release/${{ github.event.inputs.version }}
 
       - name: Update changelog
-        uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
+        uses: CuBoulder/keep-a-changelog-new-release@1
         with:
           tag: ${{ github.event.inputs.version }}
 
@@ -40,7 +40,7 @@ jobs:
         run: git push origin release/${{ github.event.inputs.version }}
 
       - name: Create pull request
-        uses: thomaseizinger/create-pull-request@1.4.0
+        uses: CuBoulder/create-pull-request@1
         env:
           GITHUB_TOKEN: ${{ secrets.envPAT }}
         with:
