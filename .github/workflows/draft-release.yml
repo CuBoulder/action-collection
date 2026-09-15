@@ -17,7 +17,7 @@ jobs:
         run: git checkout -b release/${{ github.event.inputs.version }}
 
       - name: Update changelog
-        uses: CuBoulder/keep-a-changelog-new-release@1
+        uses: CuBoulder/keep-a-changelog-new-release@1.0.0
         with:
           tag: ${{ github.event.inputs.version }}
 
@@ -40,7 +40,7 @@ jobs:
         run: git push origin release/${{ github.event.inputs.version }}
 
       - name: Create pull request
-        uses: CuBoulder/create-pull-request@1
+        uses: CuBoulder/create-pull-request@1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.envPAT }}
         with:
